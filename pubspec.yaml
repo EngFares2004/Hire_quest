@@ -1,0 +1,44 @@
+name: hire_quest
+description: "HireQuest A Graduation project."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  image_picker: ^1.2.1
+  font_awesome_flutter: ^10.12.0
+  path_provider: ^2.1.5
+  cupertino_icons: ^1.0.8
+  intl_phone_field: ^3.2.0
+  url_launcher: ^6.3.2
+  flutter_native_splash: ^2.4.7
+  shared_preferences: ^2.5.3
+  dio: ^5.9.0
+  flutter_bloc: ^9.1.1
+  flutter_svg: ^2.2.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/icons/
+
+flutter_native_splash:
+  color: "#2B3A67"
+  image: assets/icons/logo.png
+  android: true
+  ios: true
+  web: true
+  android_12:
+    color: "#2B3A67"
+    image: assets/icons/logo.png
+    icon_background_color: "#2B3A67"
