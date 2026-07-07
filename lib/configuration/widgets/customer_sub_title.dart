@@ -3,7 +3,7 @@ import '../theme/theme.dart';
 
 class SubTitle extends StatelessWidget {
   final String title;
-  final Color colorTitle;
+  final Color? colorTitle;
  final double space;
  final bool isCenter ;
  final double spacebtw;
@@ -11,7 +11,7 @@ class SubTitle extends StatelessWidget {
   const SubTitle({
     super.key,
     required this.title,
-    this.colorTitle= AppTheme.primary,
+    this.colorTitle,
     this.space = 32,
     this.spacebtw =8,
     this.size =20,
@@ -20,6 +20,13 @@ class SubTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    final isDark = theme.brightness == Brightness.dark;
+
+    final primaryColor = AppTheme.primary;
+
+    final textColor = isDark ? AppTheme.darkGrey : primaryColor;
     return
        Column(
          children: [
@@ -27,7 +34,7 @@ class SubTitle extends StatelessWidget {
            Text(
             title,
             style:  TextStyle(
-              color:colorTitle,
+              color:colorTitle ?? textColor,
               fontWeight: FontWeight.w500,
               fontSize: size,
             ),

@@ -14,6 +14,11 @@ class CustomerArrowBack extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    final isDark = theme.brightness == Brightness.dark;
+
+    final primaryColor = AppTheme.primary;
+
+    final textColor = isDark ? AppTheme.darkGrey : primaryColor;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -42,7 +47,7 @@ class CustomerArrowBack extends StatelessWidget {
             Text(
               title ?? '',
               style: theme.textTheme.headlineSmall?.copyWith(
-                color:AppTheme.primary,
+                color:textColor,
                 fontWeight: FontWeight.bold,
               ),
             ),

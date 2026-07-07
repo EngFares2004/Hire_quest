@@ -1,4 +1,3 @@
-// ===================== PROFILE EDIT SCREEN =====================
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,8 +40,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final theme = Theme.of(context);
+    final cubit = context.read<ProfileEditCubit>();
+
     return Scaffold(
       body: BlocBuilder<ProfileEditCubit, ProfileEditState>(
         builder: (context, state) {
@@ -50,19 +50,13 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final cubit = context.read<ProfileEditCubit>();
+          final savedImageUrl =
+          SharedHandler.instance.getString('profileImageUrl');
 
-          ImageProvider imageProvider;
-
-
-            final savedImageUrl = SharedHandler.instance.getString('profileImageUrl');
-            if (savedImageUrl != null && savedImageUrl.isNotEmpty) {
-              imageProvider = NetworkImage(savedImageUrl);
-            } else {
-              imageProvider = const AssetImage(Assets.imagesHeroEmployee);
-            }
-
-
+          final ImageProvider imageProvider =
+          (savedImageUrl != null && savedImageUrl.isNotEmpty)
+              ? NetworkImage(savedImageUrl)
+              :  AssetImage(Assets.images.heroEmployee as String);
 
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16),
@@ -78,10 +72,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                   Center(
                     child: Stack(
                       children: [
-
                         CircleAvatar(
                           radius: 90,
-                          backgroundImage: cubit.getProfileImage(),
+                          backgroundImage: imageProvider,
                           backgroundColor: AppTheme.grey,
                         ),
                         Positioned(
@@ -92,7 +85,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                             child: const CircleAvatar(
                               radius: 18,
                               backgroundColor: AppTheme.primary,
-                              child: Icon(Icons.edit, color: AppTheme.white),
+                              child: Icon(Icons.edit,
+                                  color: AppTheme.white),
                             ),
                           ),
                         ),
@@ -101,90 +95,69 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                   ),
 
                   const SizedBox(height: 32),
+
                   const SubTitle(title: "Personal Information"),
                   const SizedBox(height: 12),
-                  InkWell(
-                    onTap: () {
 
-                      showEditProfileDialog(
+                  // ================= NAME =================
+                  _buildEditableField(
+                    context: context,
+                    controller: cubit.nameController,
+                    title: "Edit Name",
+                    hint: "Enter your full name",
+                    prefixIcon: Icons.person_outline,
+                    validator: (v) =>
+                        Validation.validateUsername(v ?? ''),
+                    onSave: () {
+                      final fullName = cubit.nameController.text.trim();
+                      final names = fullName.split(" ");
+
+                      cubit.updateProfileName(
+                        fullName: fullName,
+                        firstName: names.first,
+                        lastName: names.length > 1
+                            ? names.sublist(1).join(" ")
+                            : "",
+                      );
+
+                      cubit.updateProfile(
                         context: context,
-                        title: "Edit Name",
-                        controller: cubit.nameController,
-                        validator: (value) => Validation.validateUsername(value ?? ''),
-                        onSave: () {
-                          final fullName = cubit.nameController.text.trim();
-                          final names = fullName.split(" ");
-
-                          cubit.updateProfileName(
-                            fullName: fullName,
-                            firstName: names.first,
-                            lastName: names.length > 1 ? names.sublist(1).join(" ") : "",
-                          );
-
-                          cubit.updateProfile(
-                            context: context,
-                            firstName: names.first,
-                            lastName: names.length > 1 ? names.last : "",
-                          );
-                        },
+                        firstName: names.first,
+                        lastName:
+                        names.length > 1 ? names.sublist(1).join(" ") : "",
                       );
                     },
-                    child: CustomTextField(
-                      isEnabled: false,
-                      hintText: "Enter your full name",
-                      controller: cubit.nameController,
-                      isSuffix: true,
-                      suffixIcon: Icons.edit,
-                      prefixIcon: Icon(
-                        Icons.person_outline,
-                        color: theme.brightness == Brightness.dark
-                            ? AppTheme.white
-                            : AppTheme.primary,
-                      ),
-                    )
+                    theme: theme,
                   ),
 
                   const SizedBox(height: 12),
-                  InkWell(
-                    onTap: () {
 
-                      showEditProfileDialog(
+                  // ================= EMAIL =================
+                  _buildEditableField(
+                    context: context,
+                    controller: cubit.emailController,
+                    title: "Edit Email",
+                    hint: "example@gmail.com",
+                    prefixIcon: Icons.email_outlined,
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (v) =>
+                        Validation.validateEmail(v ?? ''),
+                    onSave: () {
+                      cubit.updateProfile(
                         context: context,
-                        title: "Edit Email",
-                        controller: cubit.emailController,
-                          validator:   (value) => Validation.validateEmail(value ?? ''),
-                        onSave: () {
-
-                          cubit.updateProfile(
-                            context: context,
-                            email: cubit.emailController.text.trim(),
-                          );
-                        },
+                        email: cubit.emailController.text.trim(),
                       );
                     },
-                    child: CustomTextField(
-                      isEnabled: false,
-                      isSuffix: true,
-                      suffixIcon: Icons.edit,
-
-                      hintText: "example@gmail.com",
-                      controller: cubit.emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      prefixIcon: Icon(
-                        Icons.email_outlined,
-
-                        color: theme.brightness == Brightness.dark
-                            ? AppTheme.white
-                            : AppTheme.primary,
-                      ),
-                      isPassword: false,
-                    ),
+                    theme: theme,
                   ),
 
                   const SizedBox(height: 12),
+
+                  // ================= PHONE =================
                   CustomPhoneField(
                     controller: cubit.phoneController,
-                    validator:  (value) =>Validation.validatePhoneNumber(value ??''),
+                    validator: (v) =>
+                        Validation.validatePhoneNumber(v ?? ''),
                     isSuffix: true,
                     suffixIcon: Icons.edit,
                     onTap: () {
@@ -192,7 +165,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                         context: context,
                         title: "Edit Phone Number",
                         controller: cubit.phoneController,
-                        validator:   (value) => Validation.validatePhoneNumber(value ?? ''),
+                        validator: (v) =>
+                            Validation.validatePhoneNumber(v ?? ''),
                         keyboardType: TextInputType.phone,
                         onSave: () {
                           cubit.updateProfile(
@@ -205,53 +179,48 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                     },
                   ),
 
-                  // ================= CHANGE PASSWORD =================
+                  // ================= PASSWORD =================
                   const SizedBox(height: 30),
                   const SubTitle(title: "Change Password"),
                   const SizedBox(height: 12),
-                  CustomTextField(
-                    hintText: "Enter current password",
-                    controller: cubit.currentPassController,
-                    isPassword: true,
-                    prefixIcon: const Icon(CupertinoIcons.lock_shield),
-                    validator:   (value) => Validation.validatePassword(value ?? ''),
 
+                  _passwordField(
+                    cubit.currentPassController,
+                    "Enter current password",
                   ),
                   const SizedBox(height: 12),
-                  CustomTextField(
-                    hintText: "Enter new password",
-                    controller: cubit.newPassController,
-                    isPassword: true,
-                    prefixIcon: const Icon(CupertinoIcons.lock_shield),
-                    validator:    (value) => Validation.validatePassword(value ?? ''),
-
-          ),
+                  _passwordField(
+                    cubit.newPassController,
+                    "Enter new password",
+                  ),
                   const SizedBox(height: 12),
-                  CustomTextField(
-                    hintText: "Confirm new password",
-                    controller: cubit.confirmPassController,
-                    isPassword: true,
-                    prefixIcon: const Icon(CupertinoIcons.lock_shield),
-                    validator:   (value) => Validation.validatePasswordMatch(
+                  _passwordField(
+                    cubit.confirmPassController,
+                    "Confirm new password",
+                    validator: (v) => Validation.validatePasswordMatch(
                       cubit.newPassController.text,
-                               value ?? '',
-                      ),
-
+                      v ?? '',
+                    ),
                   ),
 
                   const SizedBox(height: 32),
+
+                  // ================= BUTTONS =================
                   Row(
                     children: [
                       Expanded(
                         flex: 5,
-                        child: BlocBuilder<ProfileEditCubit, ProfileEditState>(
+                        child: BlocBuilder<ProfileEditCubit,
+                            ProfileEditState>(
                           builder: (context, state) {
                             final isLoading = state is PasswordLoading;
+
                             return Column(
                               children: [
                                 if (state is PasswordError)
                                   Padding(
-                                    padding: const EdgeInsets.only(bottom: 10),
+                                    padding: const EdgeInsets.only(
+                                        bottom: 10),
                                     child: Text(
                                       state.message,
                                       style: const TextStyle(
@@ -268,11 +237,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                   onTap: isLoading
                                       ? () {}
                                       : () {
-                                          if (cubit.formKey.currentState!
-                                              .validate()) {
-                                            cubit.changePassword();
-                                          }
-                                        },
+                                    if (cubit.formKey.currentState!
+                                        .validate()) {
+                                      cubit.changePassword();
+                                    }
+                                  },
                                 ),
                               ],
                             );
@@ -298,6 +267,63 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
           );
         },
       ),
+    );
+  }
+
+  // ================= HELPERS =================
+
+  Widget _buildEditableField({
+    required BuildContext context,
+    required TextEditingController controller,
+    required String title,
+    required String hint,
+    required IconData prefixIcon,
+    required Function() onSave,
+    ThemeData? theme,
+    TextInputType? keyboardType,
+    String? Function(String?)? validator,
+  }) {
+    return InkWell(
+      onTap: () {
+        showEditProfileDialog(
+          context: context,
+           title: title,
+          controller: controller,
+          validator: validator,
+          keyboardType: keyboardType,
+          onSave: onSave,
+        );
+      },
+      child: CustomTextField(
+
+        isEnabled: false,
+        hintText: hint,
+        controller: controller,
+        isSuffix: true,
+        suffixIcon: Icons.edit,
+
+        prefixIcon: Icon(
+          prefixIcon,
+          color: theme?.brightness == Brightness.dark
+              ? AppTheme.white
+              : AppTheme.primary,
+        ),
+      ),
+    );
+  }
+
+  Widget _passwordField(
+      TextEditingController controller,
+      String hint, {
+        String? Function(String?)? validator,
+      }) {
+    return CustomTextField(
+      hintText: hint,
+      controller: controller,
+      isPassword: true,
+      prefixIcon: const Icon(CupertinoIcons.lock_shield),
+      validator: validator ??
+              (v) => Validation.validatePassword(v ?? ''),
     );
   }
 }

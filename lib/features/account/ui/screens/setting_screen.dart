@@ -84,7 +84,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           TextButton(
             onPressed: () {
-              // هنا تحط كود حذف الحساب
               Navigator.pop(context);
               ScaffoldMessenger.of(
                 context,
@@ -98,7 +97,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _addAccount() {
-    // هنا تحط كود إضافة الحساب
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(const SnackBar(content: Text("Add Account clicked")));
@@ -135,6 +133,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           CustomBuildTile(
             icon: Icons.delete_outline,
             title: "Delete Account",
+
             onTap: _confirmDeleteAccount,
           ),
 
@@ -208,12 +207,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 context: context,
                 applicationName: "HireQuest",
                 applicationVersion: "v1.0.0",
-                applicationIcon: SvgPicture.asset(
-                  Assets.iconsVrGlasses,
+                applicationIcon:Assets.icons.vrGlasses.svg(
                   width: 32,
                   height: 32,
-                  color: Theme.of(context).colorScheme.primary, // 👈 Theme Aware
+                  color:  Theme.of(context).colorScheme.primary,
                 ),
+
                 children: [
                   Text(
                     "HireQuest helps you prepare for interviews using AI-driven questions.",

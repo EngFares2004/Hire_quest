@@ -27,8 +27,12 @@ class CustomBuildTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    final isDark = theme.brightness == Brightness.dark;
+
     final primaryColor = AppTheme.primary;
     final errorColor = AppTheme.error;
+
+    final textColor = isDark ? AppTheme.darkGrey : primaryColor;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
@@ -51,14 +55,20 @@ class CustomBuildTile extends StatelessWidget {
                       ? errorColor
                       : (colorIcon ?? primaryColor),
                 ),
+
             title: Text(
               title,
               style: theme.textTheme.bodyMedium?.copyWith(
-                fontSize: 15,
+                fontSize: isLogout
+                ? 18
+                : 15,
                 fontWeight: FontWeight.w500,
-                color: primaryColor,
+                color: isLogout
+                ? errorColor
+                : textColor,
               ),
             ),
+
             trailing: isLogout
                 ? null
                 : (isTrailing
@@ -66,7 +76,7 @@ class CustomBuildTile extends StatelessWidget {
                 : Icon(
               Icons.arrow_forward_ios_rounded,
               size: 16,
-              color: primaryColor,
+              color: textColor,
             )),
           ),
         ),

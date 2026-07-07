@@ -8,13 +8,12 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this.repository) : super(HomeLoading());
 
   Future<void> loadHome() async {
-    emit(HomeLoading());
-    final data = await repository.getHome();
-
-    if (data.hasInterview) {
-      emit(HomeAfterInterview(data));
-    } else {
-      emit(HomeBeforeInterview(data));
+    try {
+      emit(HomeLoading());
+      final data = await repository.getHome();
+      emit(HomeLoaded(data));
+    } catch (e) {
+      emit(HomeError(e.toString()));
     }
   }
 }

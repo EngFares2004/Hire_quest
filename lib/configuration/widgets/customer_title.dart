@@ -4,25 +4,32 @@ import '../theme/theme.dart';
 class CustomerTitle extends StatelessWidget {
   final String title;
   final String desc;
-  double sizeTitle = 32;
-  final double descSize ;
-  bool height ;
-  Color colorTitle;
-  Color colorSubtitle;
+ final double sizeTitle;
+  final double descSize;
+  final bool height;
+  final Color? colorTitle;
+  final Color colorSubtitle;
 
-  CustomerTitle({
+  const CustomerTitle({
     super.key,
     required this.title,
     required this.desc,
     this.sizeTitle = 32,
-    this.height=true,
-    this.descSize=12,
-    this.colorTitle = AppTheme.primary,
+    this.height = true,
+    this.descSize = 12,
+    this.colorTitle,
     this.colorSubtitle = AppTheme.secondary,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    final isDark = theme.brightness == Brightness.dark;
+
+    final primaryColor = AppTheme.primary;
+
+    final textColor = isDark ? AppTheme.darkGrey : primaryColor;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,10 +39,10 @@ class CustomerTitle extends StatelessWidget {
           style: TextStyle(
             fontSize: sizeTitle,
             fontWeight: FontWeight.w700,
-            color: colorTitle,
+            color: colorTitle ?? textColor,
           ),
         ),
-          SizedBox(height: height ? 8 : 0 ),
+        SizedBox(height: height ? 8 : 0),
         Text(
           desc,
           style: TextStyle(

@@ -1,24 +1,25 @@
-class HomeDataSource {
-  Future<Map<String, dynamic>> fetchHome() async {
-    await Future.delayed(const Duration(seconds: 1));
+import '../../../../configuration/network/dio_client.dart';
+import '../../../../configuration/network/end_point.dart';
 
-    return {
-      "userName": "Fares",
-      "role": "Flutter Dev",
-      "hasInterview": true,
-      "questions": 50,
-      "aiModels": 4,
-      "duration": "20-30 Minutes",
-      "languages": 2,
-      "total": 9,
-      "average": 82,
-      "best": 95,
-      "level": "Junior",
-      "recentScore": 85,
-      "recentDuration": "2 days ago • 25 minutes",
-      "lastInterviewRole": "Flutter Developer",
-      "lastInterviewScore": 88,
-      "lastInterviewDate": "2025-12-20",
-    };
+
+class HomeDataSource {
+  final DioClient client;
+
+  HomeDataSource(this.client);
+
+  Future<Map<String, dynamic>> fetchHome() async {
+    final response = await client.get(
+      AppEndPoint.myProfile,
+      queryParameters: {
+        "includePreferences": true,
+        "includeStatistics": true,
+      },
+    );
+
+    if (response.data['success'] == true) {
+      return response.data['data'];
+    } else {
+      throw Exception(response.data['message']);
+    }
   }
 }

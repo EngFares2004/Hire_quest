@@ -1,5 +1,7 @@
+import '../../../generated/assets.dart';
+
 class SplashModel {
-  final String image;
+  final SvgGenImage  image;
   final String title;
   final String subtitle;
 

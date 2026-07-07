@@ -23,13 +23,12 @@ class VrIntegrationScreen extends StatelessWidget {
            ),
              Spacer(),
              Center(
-               child: SvgPicture.asset(
-                Assets.iconsIconApp,
-                width:70,
-                height: 70,
-                color: AppTheme.primary,
-                           ),
-             ),
+               child:Assets.icons.iconApp.svg(
+                 width: 70,
+                 height: 70,
+                 color: AppTheme.primary,
+               )),
+
 
             const SizedBox(height: 24),
 

@@ -1,5 +1,3 @@
-
-
 import '../../domain/entities/home_entity.dart';
 import '../../domain/repositories/home_repository.dart';
 import '../datasources/home_datasource.dart';
@@ -13,6 +11,6 @@ class HomeRepositoryImpl implements HomeRepository {
   @override
   Future<HomeEntity> getHome() async {
     final data = await datasource.fetchHome();
-    return HomeModel.fromJson(data);
+    return HomeModel.fromApi(data);
   }
 }

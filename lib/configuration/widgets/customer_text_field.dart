@@ -110,15 +110,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
               borderSide: BorderSide(color: AppTheme.error, width: 2),
             ),
             disabledBorder:OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(
 
-          color: !_isValidatedOnce
-              ? theme.dividerColor
-              : (_isValid ? AppTheme.green : AppTheme.error),
-          width: 1.5,
-        ),
-      ),
+                color: !_isValidatedOnce
+                    ? theme.dividerColor
+                    : (_isValid ? AppTheme.green : AppTheme.error),
+                width: 1.5,
+              ),
+            ),
             // ---------- ICONS ----------
             prefixIcon: widget.prefixIcon,
 
@@ -142,11 +142,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     if (_isValidatedOnce)
                       Padding(
                         padding: const EdgeInsets.only(right: 8),
-                        child: SvgPicture.asset(
-                          _isValid ? Assets.iconsSuccess : Assets.iconsError,
-                          height: 24,
-                          width: 24,
-                        ),
+                        child:(_isValid
+                            ? Assets.icons.success
+                            : Assets.icons.error)
+                            .svg(height: 24, width: 24),
                       ),
                   ],
                 );
@@ -161,22 +160,20 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     if (_isValidatedOnce && widget.isEnabled)
                       Padding(
                         padding: const EdgeInsets.only(right: 8),
-                        child: SvgPicture.asset(
-                          _isValid ? Assets.iconsSuccess : Assets.iconsError,
-                          height: 24,
-                          width: 24,
-                        ),
+                        child: (_isValid
+                            ? Assets.icons.success
+                            : Assets.icons.error)
+                            .svg(height: 24, width: 24),
                       ),
                   ],
                 );
               } else if (_isValidatedOnce) {
                 return Padding(
                   padding: const EdgeInsets.only(right: 8, top: 10, bottom: 10),
-                  child: SvgPicture.asset(
-                    _isValid ? Assets.iconsSuccess : Assets.iconsError,
-                    height: 8,
-                    width: 8,
-                  ),
+                  child: (_isValid
+                      ? Assets.icons.success
+                      : Assets.icons.error)
+                      .svg(height: 8, width: 8),
                 );
               } else {
                 // لا suffix ولا validation
@@ -190,5 +187,3 @@ class _CustomTextFieldState extends State<CustomTextField> {
     );
   }
 }
-
-

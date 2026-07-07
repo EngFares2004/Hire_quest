@@ -14,11 +14,12 @@ class HeaderVrCode extends StatelessWidget {
          CustomerArrowBack(title: title),
         SizedBox(height: 40,),
         Center(
-          child: Image.asset(
-            Assets.imagesInterviewer,
-            height: 250,
+          child:Assets.images.interviewer.image(
             width: 250,
+            height: 250,
+
           ),
+
         ),
       ],
     );

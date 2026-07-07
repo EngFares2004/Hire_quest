@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../configuration/theme/theme.dart';
+import '../../../../generated/assets.dart';
 import '../../models/splash_model.dart';
 
 
@@ -40,10 +41,9 @@ class SplashWidget extends StatelessWidget {
               ),
             ),
           const SizedBox(height: 4),
-          SvgPicture.asset(
-              data.image,
+
+          data.image.svg(
             height: MediaQuery.of(context).size.height * 0.40,
-             // height: MediaQuery.of(context).size.height/2.25,
           ),
 
 

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hire_quest/generated/assets.dart';
 
 import '../../../../configuration/theme/theme.dart';
 
 class StatCard extends StatelessWidget {
-  final String icon;
+  final SvgGenImage icon;
   final String title;
   final String value;
-  final Color? color; // optional theme-aware color
+  final Color? color;
 
   const StatCard({
     super.key,
@@ -21,31 +21,36 @@ class StatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    final baseColor = color ?? theme.colorScheme.primary;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: (color ?? theme.colorScheme.primary).withOpacity(0.15), // Theme Aware
+        color: baseColor.withOpacity(0.15),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SvgPicture.asset(
-            icon,
-            color: color ?? AppTheme.primary, // Theme Aware icon color
+          icon.svg(
             height: 30,
             width: 30,
+            color: baseColor,
           ),
+
           const SizedBox(height: 12),
+
           Text(
             title,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              color: theme.textTheme.bodyMedium?.color, // Theme Aware
+              color: theme.textTheme.bodyMedium?.color,
             ),
           ),
+
           const SizedBox(height: 4),
+
           Text(
             value,
             maxLines: 1,
@@ -53,7 +58,7 @@ class StatCard extends StatelessWidget {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
-              color: theme.textTheme.bodyMedium?.color, // Theme Aware
+              color: theme.textTheme.bodyMedium?.color,
             ),
           ),
         ],

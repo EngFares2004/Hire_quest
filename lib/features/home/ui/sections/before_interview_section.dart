@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hire_quest/configuration/theme/theme.dart';
-import 'package:hire_quest/configuration/widgets/customer_sub_title.dart';
 import 'package:hire_quest/configuration/widgets/customer_title.dart';
 
-import '../../../../configuration/route/route.dart';
+import '../../../../configuration/network/dio_client.dart';
 import '../../../../configuration/widgets/customer_bottom.dart';
+import '../../../../configuration/widgets/customer_sub_title.dart';
 import '../../../../generated/assets.dart';
-import '../../../account/ui/cubit/default_iv_setting_cubit/default_iv_setting_cubit.dart';
-import '../../../account/ui/widgets/career_configuration_btn_sheet.dart';
-import '../../../onboarding/domain/repositories/onboarding_repository.dart';
+import '../../bloc/interview_setup_review_cubit/interview_setup_review_cubit.dart';
 import '../../domain/entities/home_entity.dart';
-import '../widgets/header_section.dart';
 import '../widgets/interview_review_bottomSheet.dart';
 import '../widgets/stat_card.dart';
 import '../widgets/stats_grid.dart';
@@ -25,7 +22,7 @@ class BeforeInterviewSection extends StatelessWidget {
     final theme = Theme.of(context);
     return Column(
       children: [
-        HeaderSection(data: data),
+        //  HeaderSection(data: data),
         SizedBox(
           height: MediaQuery.of(context).size.height / 1.3,
           child: SingleChildScrollView(
@@ -42,38 +39,34 @@ class BeforeInterviewSection extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // SubTitle(title: 'Your Progress Stats'),
-                      Text(
-                        'Your Progress Stats',
-                        style: const TextStyle(
-                          color: AppTheme.primary,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20,
-                        ),
+                      SubTitle(
+                        title: 'Your Progress Stats',
+                        space: 0,
+                        size: 20,
                       ),
 
                       StatsGrid(
                         items: [
                           StatCard(
-                            icon: Assets.iconsMonitor,
+                            icon: Assets.icons.monitor,
                             title: "Total Interviews",
                             value: '${data.total}',
                             color: AppTheme.babyBlue,
                           ),
                           StatCard(
-                            icon: Assets.iconsFavoriteChart,
+                            icon: Assets.icons.favoriteChart,
                             title: "Average Score",
                             value: "${data.average}/100",
                             color: AppTheme.babyBlue,
                           ),
                           StatCard(
-                            icon: Assets.iconsCup,
+                            icon: Assets.icons.cup,
                             title: "Best Score",
                             value: "${data.best}/100",
                             color: AppTheme.green,
                           ),
                           StatCard(
-                            icon: Assets.iconsLevel,
+                            icon: Assets.icons.level,
                             title: "Current Level",
                             value: data.level,
                             color: AppTheme.green,
@@ -94,15 +87,13 @@ class BeforeInterviewSection extends StatelessWidget {
                             ),
                             isScrollControlled: true,
                             builder: (_) => BlocProvider(
-                              create: (context) => DefaultIVSettingCubit(
-                                context.read<OnboardingRepository>(),
-                              )..loadOptions(),
+                              create: (_) =>
+                                  InterviewSetupReviewCubit(DioClient())
+                                    ..loadUserSetup(),
                               child: SizedBox(
                                 height:
-                                MediaQuery.of(context).size.height *
-                                    0.55,
-                                child:
-                                const InterviewSetupReviewBottomSheet(),
+                                    MediaQuery.of(context).size.height * 0.55,
+                                child: const InterviewSetupReviewBottomSheet(),
                               ),
                             ),
                           );
@@ -149,15 +140,13 @@ class BeforeInterviewSection extends StatelessWidget {
                             ),
                             isScrollControlled: true,
                             builder: (_) => BlocProvider(
-                              create: (context) => DefaultIVSettingCubit(
-                                context.read<OnboardingRepository>(),
-                              )..loadOptions(),
+                              create: (_) =>
+                                  InterviewSetupReviewCubit(DioClient())
+                                    ..loadUserSetup(),
                               child: SizedBox(
                                 height:
-                                MediaQuery.of(context).size.height *
-                                    0.55,
-                                child:
-                                const InterviewSetupReviewBottomSheet(),
+                                    MediaQuery.of(context).size.height * 0.55,
+                                child: const InterviewSetupReviewBottomSheet(),
                               ),
                             ),
                           );
@@ -165,8 +154,7 @@ class BeforeInterviewSection extends StatelessWidget {
                         isOutline: true,
                         textColor: AppTheme.primary,
                         textSize: 16,
-                      )
-                      ,
+                      ),
                     ],
                   ),
                 ),

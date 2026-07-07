@@ -20,10 +20,12 @@ class SuccessPasswordScreen extends StatelessWidget {
           children: [
 
             const SizedBox(height: 40),
-            SvgPicture.asset(
-              Assets.imagesAuthentication,
+            Assets.images.authentication.svg(
+
               height: MediaQuery.of(context).size.height * 0.40,
+              //color: AppTheme.primary,
             ),
+
 
             const SizedBox(height: 20),
 

@@ -32,12 +32,12 @@ class AboutHireQuestScreen extends StatelessWidget {
                   CircleAvatar(
                     radius: 60,
                     backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.1), // 👈 Theme Aware
-                    child: SvgPicture.asset(
-                      Assets.iconsVrGlasses,
+                    child: Assets.icons.vrGlasses.svg(
                       width: 60,
                       height: 60,
                       color: AppTheme.primary,
                     ),
+
                   ),
 
                   Row(
@@ -54,12 +54,13 @@ class AboutHireQuestScreen extends StatelessWidget {
                             context: context,
                             applicationName: "HireQuest",
                             applicationVersion: "v1.0.0",
-                            applicationIcon: SvgPicture.asset(
-                              Assets.iconsVrGlasses,
+                            applicationIcon:
+                            Assets.icons.vrGlasses.svg(
                               width: 32,
                               height: 32,
-                              color: Theme.of(context).colorScheme.primary, // 👈 Theme Aware
+                              color:Theme.of(context).colorScheme.primary,
                             ),
+
                             children: [
                               Text(
                                 "HireQuest helps you prepare for interviews using AI-driven questions.",

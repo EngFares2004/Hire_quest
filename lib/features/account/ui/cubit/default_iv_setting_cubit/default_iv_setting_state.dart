@@ -13,9 +13,10 @@ class DefaultIVSettingState {
   final UserPreferencesOptionsModel? data;
   final String? error;
   final bool isValid;
-
+  final bool success;
   const DefaultIVSettingState({
     this.isLoading = false,
+    this.success = false,
     this.selectedEnvironment,
     this.selectedGender,
     this.selectedLanguage,
@@ -31,6 +32,7 @@ class DefaultIVSettingState {
 
   DefaultIVSettingState copyWith({
     bool? isLoading,
+    bool? success,
     String? selectedEnvironment,
     String? selectedGender,
     String? selectedLanguage,
@@ -56,6 +58,7 @@ class DefaultIVSettingState {
       data: data ?? this.data,
       error: error ?? this.error,
       isValid: isValid ?? this.isValid,
+      success: success ?? this.success,
     );
   }
 }

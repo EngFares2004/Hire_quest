@@ -14,18 +14,55 @@ class DioClient {
         validateStatus: (status) => status != null && status < 500,
       ),
     );
+
+    dio.interceptors.add(InterceptorsWrapper(
+      onRequest: (options, handler) async {
+        final token =
+        SharedHandler.instance.getString(SharedKeys.token);
+
+        if (token != null) {
+          options.headers['Authorization'] = 'Bearer $token';
+        }
+
+        return handler.next(options);
+      },
+
+      onError: (error, handler) async {
+        // لو Unauthorized
+        if (error.response?.statusCode == 401) {
+          final success = await _refreshToken();
+
+          if (success) {
+            final newToken =
+            SharedHandler.instance.getString(SharedKeys.token);
+
+            // إعادة الطلب
+            final requestOptions = error.requestOptions;
+
+            requestOptions.headers['Authorization'] =
+            'Bearer $newToken';
+
+            final cloneResponse = await dio.fetch(requestOptions);
+            return handler.resolve(cloneResponse);
+          }
+        }
+
+        return handler.next(error);
+      },
+    ));
   }
 
-  // ======= تأكد من صلاحية التوكن قبل أي request =======
-  Future<void> ensureTokenValid() async {
-    final token = SharedHandler.instance.getString(SharedKeys.token);
-    final refreshToken = SharedHandler.instance.getString(SharedKeys.refreshToken);
+  // 🔥 Refresh Token مرة واحدة فقط عند الحاجة
+  Future<bool> _refreshToken() async {
+    final token =
+    SharedHandler.instance.getString(SharedKeys.token);
+    final refreshToken =
+    SharedHandler.instance.getString(SharedKeys.refreshToken);
 
-    // لو التوكن موجود بالفعل
-    if (token == null || refreshToken == null) return;
+    if (token == null || refreshToken == null) return false;
 
     try {
-      final response = await dio.post(
+      final response = await Dio().post(
         AppEndPoint.refreshToken,
         data: {
           "token": token,
@@ -35,75 +72,45 @@ class DioClient {
 
       if (response.data['success'] == true) {
         final newToken = response.data['data']?['token'];
-        final newRefreshToken = response.data['data']?['refreshToken'];
+        final newRefreshToken =
+        response.data['data']?['refreshToken'];
 
         if (newToken != null) {
-          await SharedHandler.instance.setString(SharedKeys.token, newToken);
+          await SharedHandler.instance
+              .setString(SharedKeys.token, newToken);
         }
+
         if (newRefreshToken != null) {
-          await SharedHandler.instance.setString(SharedKeys.refreshToken, newRefreshToken);
+          await SharedHandler.instance
+              .setString(SharedKeys.refreshToken, newRefreshToken);
         }
-        print("✅ Token refreshed successfully");
+
+        print("✅ Token refreshed");
+        return true;
       }
     } catch (e) {
-      print("❌ Refresh token failed: $e");
+      print("❌ Refresh failed: $e");
     }
+
+    return false;
   }
 
+  // ======== Requests (بسيطة دلوقتي 👇) ========
 
-  // ======== GET ========
-  Future<Response> get(String path, {Map<String, dynamic>? queryParameters}) async {
-    await ensureTokenValid();
-    final token = SharedHandler.instance.getString(SharedKeys.token);
-
-    return await dio.get(
-      path,
-      queryParameters: queryParameters,
-      options: Options(
-        headers: {'Authorization': 'Bearer $token'},
-      ),
-    );
+  Future<Response> get(String path,
+      {Map<String, dynamic>? queryParameters}) async {
+    return await dio.get(path, queryParameters: queryParameters);
   }
 
-  // ======== POST ========
   Future<Response> post(String path, {dynamic data}) async {
-    await ensureTokenValid();
-    final token = SharedHandler.instance.getString(SharedKeys.token);
-
-    return await dio.post(
-      path,
-      data: data,
-      options: Options(
-        headers: {'Authorization': 'Bearer $token'},
-      ),
-    );
+    return await dio.post(path, data: data);
   }
 
-  // ======== PUT ========
   Future<Response> put(String path, {dynamic data}) async {
-    await ensureTokenValid();
-    final token = SharedHandler.instance.getString(SharedKeys.token);
-
-    return await dio.put(
-      path,
-      data: data,
-      options: Options(
-        headers: {'Authorization': 'Bearer $token'},
-      ),
-    );
+    return await dio.put(path, data: data);
   }
 
-  // ======== DELETE ========
   Future<Response> delete(String path, {dynamic data}) async {
-    await ensureTokenValid();
-    final token = SharedHandler.instance.getString(SharedKeys.token);
-
-    return await dio.delete(
-      path,
-      data: data,
-      options: Options(
-        headers: {'Authorization': 'Bearer $token'},
-      ),
-    );
+    return await dio.delete(path, data: data);
   }
 }

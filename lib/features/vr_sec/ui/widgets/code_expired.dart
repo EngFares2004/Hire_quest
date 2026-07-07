@@ -19,12 +19,12 @@ class CodeExpired extends StatelessWidget {
         CustomerArrowBack(title:'Code Expired'),
         Spacer(),
         Center(
-          child: SvgPicture.asset(
-            Assets.iconsIconApp,
-            width:70,
+          child:Assets.icons.iconApp.svg(
+            width: 70,
             height: 70,
             color: AppTheme.primary,
           ),
+
         ),
 
         const SizedBox(height: 24),

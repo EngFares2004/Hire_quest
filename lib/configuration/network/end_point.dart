@@ -52,5 +52,13 @@ class AppEndPoint {
 
 
   static const String interviewById =
-      '$baseUrl/api/Interview';
+      '$baseUrl/api/Interview/';
+
+  /// -------- LEADERBOARD --------
+  static const String leaderboard =
+      '$baseUrl/api/leaderboard';
+
+  static const String leaderboardJobTitles =
+      '$baseUrl/api/leaderboard/job-titles';
+
 }

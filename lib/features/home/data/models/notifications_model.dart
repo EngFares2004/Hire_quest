@@ -14,7 +14,6 @@ class NotificationModel {
   });
 }
 
-// بيانات إشعارات وهمية
 final List<NotificationModel> notifications = [
   NotificationModel(
     title: "Interview Scheduled",

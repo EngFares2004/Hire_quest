@@ -53,16 +53,14 @@ class AddVr extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4),
               child: Card(
-                margin:
-                const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+                margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
                 color: theme.colorScheme.surface,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: ListTile(
-                  leading: SvgPicture.asset(
-                    Assets.iconsVrGlasses,
+                  leading: Assets.icons.vrGlasses.svg(
                     width: 32,
                     height: 32,
                     color: AppTheme.primary,
@@ -73,8 +71,7 @@ class AddVr extends StatelessWidget {
                     descSize: 10,
                     sizeTitle: 14,
                   ),
-                  trailing: SvgPicture.asset(
-                    Assets.iconsLogout,
+                  trailing:Assets.icons.logout.svg(
                     width: 28,
                     height: 28,
                     color: AppTheme.error,

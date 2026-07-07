@@ -38,8 +38,8 @@ class MyApp extends StatelessWidget {
     final dioClient = DioClient();
 
 
-    final homeRepository = HomeRepositoryImpl(HomeDataSource());
-
+    final homeDataSource = HomeDataSource(dioClient);
+    final homeRepository = HomeRepositoryImpl(homeDataSource);
     final onboardingRepository = OnboardingRepositoryImpl(
       OnboardingRemoteDataSourceImpl(dioClient.dio),
     );

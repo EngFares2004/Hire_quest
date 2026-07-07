@@ -19,18 +19,15 @@ class UserProfileModel {
     this.profilePictureUrl,
   });
 
-  // ======================= fromJson =======================
   factory UserProfileModel.fromJson(Map<String, dynamic> json) {
     final fullName = json['fullName'] ?? '';
-    final names = fullName.split(' ');
-    final firstName = names.isNotEmpty ? names.first : '';
-    final lastName = names.length > 1 ? names.sublist(1).join(' ') : '';
+    final parts = fullName.split(' ');
 
     return UserProfileModel(
       userId: json['userId'] ?? '',
       fullName: fullName,
-      firstName: firstName,
-      lastName: lastName,
+      firstName: parts.isNotEmpty ? parts.first : '',
+      lastName: parts.length > 1 ? parts.sublist(1).join(' ') : '',
       email: json['email'] ?? '',
       phoneNumber: json['phoneNumber'] ?? '',
       country: json['country'] ?? 'Egypt',
@@ -38,7 +35,6 @@ class UserProfileModel {
     );
   }
 
-  // ======================= copyWith =======================
   UserProfileModel copyWith({
     String? fullName,
     String? firstName,

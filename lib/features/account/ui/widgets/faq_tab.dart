@@ -8,6 +8,12 @@ class FaqTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    final isDark = theme.brightness == Brightness.dark;
+
+    final primaryColor = AppTheme.primary;
+
+    final textColor = isDark ? AppTheme.darkGrey : primaryColor;
+
     final List<Map<String, String>> faqs = [
       {
         "q": "What is HireQuest?",
@@ -44,6 +50,7 @@ class FaqTab extends StatelessWidget {
     ];
 
     return ListView.builder(
+
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
       itemCount: faqs.length,
       itemBuilder: (context, index) {
@@ -61,7 +68,7 @@ class FaqTab extends StatelessWidget {
                 faqs[index]["q"]!,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w600,
-                  color: AppTheme.primary,
+                  color: textColor,
                 ),
               ),
               children: [

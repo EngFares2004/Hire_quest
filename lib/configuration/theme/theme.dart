@@ -6,6 +6,7 @@ abstract class AppTheme{
   static const Color white = Color(0xffFFFFFF);
   static const Color offWhite = Color(0xffEFF1F4);
   static const Color grey = Color(0xff515151);
+  static const Color darkGrey = Color(0xffEFF1F4);
   static const Color babyBlue = Color(0xffC8B0FF);
   static const Color green = Color(0xff81D285);
   static const Color black = Color(0xff000000);

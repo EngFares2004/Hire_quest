@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:hire_quest/configuration/network/dio_client.dart';
 import 'package:hire_quest/features/account/ui/screens/support_screen.dart';
 import 'package:hire_quest/features/account/ui/screens/personal_information_screen.dart';
@@ -26,8 +25,6 @@ import 'default_interview_setting_screen.dart';
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +35,6 @@ class ProfileScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               const SizedBox(height: 24),
 
               // ===== Profile Card =====
@@ -59,33 +55,33 @@ class ProfileScreen extends StatelessWidget {
 
               const SizedBox(height: 10),
               CustomBuildTile(
-                image: SvgPicture.asset(
-                  Assets.iconsProfile,
+                image: Assets.icons.profile.svg(
                   width: 32,
                   height: 32,
                   color: AppTheme.primary,
                 ),
+
                 title: "Personal Information",
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (_) => BlocProvider(
-                        create: (_) => ProfileEditCubit(ProfileApiService(DioClient())),
+                        create: (_) =>
+                            ProfileEditCubit(ProfileApiService(DioClient())),
                         child: const ProfileEditScreen(),
                       ),
                     ),
                   );
-
-
-                }),
+                },
+              ),
               CustomBuildTile(
-                image: SvgPicture.asset(
-                  Assets.iconsBag,
+                image: Assets.icons.bag.svg(
                   width: 32,
                   height: 32,
                   color: AppTheme.primary,
                 ),
+
                 title: "Career Configuration",
                 onTap: () {
                   showModalBottomSheet(
@@ -97,48 +93,46 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     isScrollControlled: true,
                     builder: (_) => BlocProvider(
-                      create: (context) =>
-                      DefaultIVSettingCubit(
+                      create: (context) => DefaultIVSettingCubit(
                         context.read<OnboardingRepository>(),
                       )..loadOptions(),
-                  child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.55,
-                  child: const CareerConfigBottomSheet(),
-                  ),)
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.55,
+                        child: const CareerConfigBottomSheet(),
+                      ),
+                    ),
                   );
                 },
-
               ),
               CustomBuildTile(
-                image: SvgPicture.asset(
-                  Assets.iconsSetting,
+                image: Assets.icons.setting.svg(
                   width: 32,
                   height: 32,
                   color: AppTheme.primary,
                 ),
+
                 title: "Default Interview Settings",
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (_) => BlocProvider(
-                        create: (_) =>
-                        DefaultIVSettingCubit(context.read<OnboardingRepository>())
-                          ..loadOptions(),
+                        create: (_) => DefaultIVSettingCubit(
+                          context.read<OnboardingRepository>(),
+                        )..loadOptions(),
                         child: const DefaultInterviewSettingsScreen(),
                       ),
                     ),
                   );
-
                 },
               ),
               CustomBuildTile(
-                image: SvgPicture.asset(
-                  Assets.iconsVrGlasses,
+                image: Assets.icons.vrGlasses.svg(
                   width: 32,
                   height: 32,
                   color: AppTheme.primary,
                 ),
+
                 title: "VR Headset Management",
                 onTap: () {
                   Navigator.push(
@@ -146,7 +140,8 @@ class ProfileScreen extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (_) => BlocProvider(
                         create: (_) =>
-                        DeviceCubit(DeviceService(DioClient()))..checkDevice(),
+                            DeviceCubit(DeviceService(DioClient()))
+                              ..checkDevice(),
                         child: const DeviceRouterScreen(),
                       ),
                     ),
@@ -172,21 +167,19 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 10),
               // ===== Tiles with Icons =====
               CustomBuildTile(
-                image: SvgPicture.asset(
-                  Assets.iconsMessages,
+                image: Assets.icons.messages.svg(
                   width: 32,
                   height: 32,
                   color: AppTheme.primary,
                 ),
+
                 //icon: CupertinoIcons.chat_bubble_2,
                 title: "Help Center",
                 onTap: () {
                   Navigator.push(
-                    context,MaterialPageRoute(builder:
-                      (context) => SupportScreen(),
-                  )
+                    context,
+                    MaterialPageRoute(builder: (context) => SupportScreen()),
                   );
-
                 },
               ),
               CustomBuildTile(
@@ -195,16 +188,13 @@ class ProfileScreen extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (_) => const SettingsScreen(),
-                    ),
+                    MaterialPageRoute(builder: (_) => const SettingsScreen()),
                   );
                 },
               ),
               CustomBuildTile(
-               // icon: CupertinoIcons.star,
-                image: SvgPicture.asset(
-                  Assets.iconsStar,
+                // icon: CupertinoIcons.star,
+                image: Assets.icons.star.svg(
                   width: 32,
                   height: 32,
                   color: AppTheme.primary,
@@ -241,13 +231,13 @@ class ProfileScreen extends StatelessWidget {
                 },
               ),
               CustomBuildTile(
-               // icon: Icons.info_outlined,
-                image: SvgPicture.asset(
-                  Assets.iconsInfoCircle,
+                // icon: Icons.info_outlined,
+                image: Assets.icons.infoCircle.svg(
                   width: 32,
                   height: 32,
                   color: AppTheme.primary,
                 ),
+
                 title: "About HireQuest",
                 onTap: () {
                   Navigator.push(

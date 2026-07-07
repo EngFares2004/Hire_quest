@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hire_quest/configuration/route/route.dart';
 import 'package:hire_quest/configuration/theme/theme.dart';
 import 'package:hire_quest/configuration/widgets/customer_bottom.dart';
 import 'package:hire_quest/configuration/widgets/customer_sub_title.dart';
 import 'package:hire_quest/configuration/widgets/customer_title.dart';
 import 'package:hire_quest/generated/assets.dart';
-import '../../../account/ui/cubit/default_iv_setting_cubit/default_iv_setting_cubit.dart';
-import '../../../onboarding/domain/repositories/onboarding_repository.dart';
+import '../../../../configuration/network/dio_client.dart';
+import '../../bloc/interview_setup_review_cubit/interview_setup_review_cubit.dart';
 import '../../domain/entities/home_entity.dart';
-import '../widgets/header_section.dart';
 import '../widgets/interview_review_bottomSheet.dart';
 import '../widgets/stat_card.dart';
 import '../widgets/stats_grid.dart';
@@ -24,10 +22,9 @@ class AfterInterviewSection extends StatelessWidget {
 
     return Column(
       children: [
-        HeaderSection(data: data),
-
+        // HeaderSection(data: data),
         SizedBox(
-          height: MediaQuery.of(context).size.height/1.3,
+          height: MediaQuery.of(context).size.height / 1.3,
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -41,34 +38,34 @@ class AfterInterviewSection extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Start Your Interview Today',
-                        style: TextStyle(
-                          color: AppTheme.primary, // Theme Aware
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20,
-                        ),
+                      SubTitle(
+                        title: 'Start Your Interview Today',
+                        size: 20,
+                        space: 0,
                       ),
+
                       StatsGrid(
                         items: [
                           StatCard(
-                            icon: Assets.iconsMessageQuestion,
+                            icon: Assets.icons.messageQuestion,
                             title: 'Questions Available',
                             value: '+${data.questions}',
-                            color: AppTheme.babyBlue,                  ),
+                            color: AppTheme.babyBlue,
+                          ),
                           StatCard(
-                            icon: Assets.iconsAIModel,
+                            icon: Assets.icons.aIModel,
                             title: 'AI Types Available',
                             value: '${data.aiModels} Models',
-                            color: AppTheme.babyBlue,                  ),
+                            color: AppTheme.babyBlue,
+                          ),
                           StatCard(
-                            icon: Assets.iconsClock,
+                            icon: Assets.icons.clock,
                             title: 'Duration Per Test',
                             value: data.duration,
                             color: AppTheme.green,
                           ),
                           StatCard(
-                            icon: Assets.iconsLanguage,
+                            icon: Assets.icons.language,
                             title: 'Languages Supported',
                             value: '${data.languages} Options',
                             color: AppTheme.green,
@@ -88,28 +85,25 @@ class AfterInterviewSection extends StatelessWidget {
                             ),
                             isScrollControlled: true,
                             builder: (_) => BlocProvider(
-                              create: (context) => DefaultIVSettingCubit(
-                                context.read<OnboardingRepository>(),
-                              )..loadOptions(),
+                              create: (_) =>
+                                  InterviewSetupReviewCubit(DioClient())
+                                    ..loadUserSetup(),
                               child: SizedBox(
                                 height:
-                                MediaQuery.of(context).size.height *
-                                    0.55,
-                                child:
-                                const InterviewSetupReviewBottomSheet(),
+                                    MediaQuery.of(context).size.height * 0.55,
+                                child: const InterviewSetupReviewBottomSheet(),
                               ),
                             ),
                           );
                         },
                         textSize: 16,
-
                       ),
                       const SizedBox(height: 8),
                     ],
                   ),
                 ),
                 Container(
-                  width:double.infinity ,
+                  width: double.infinity,
                   padding: const EdgeInsets.all(20),
                   margin: const EdgeInsets.only(bottom: 20),
                   decoration: BoxDecoration(
@@ -127,12 +121,13 @@ class AfterInterviewSection extends StatelessWidget {
                       ),
                       Text(
                         'Your first interview is just one click away. '
-                            '\nLet\'s build your confidence!',
+                        '\nLet\'s build your confidence!',
                         style: TextStyle(
-                            color: AppTheme.secondary, fontSize: 16),
+                          color: AppTheme.secondary,
+                          fontSize: 16,
+                        ),
                       ),
                       const SizedBox(height: 16),
-
                     ],
                   ),
                 ),

@@ -20,22 +20,21 @@ class _SplashScreenState extends State<SplashScreen> {
 
   List<SplashModel> pages = [
     SplashModel(
-      image:Assets.imagesVirtualReality,
+      image: Assets.images.virtualReality,
       title: 'Train for real interviews *“virtually”*',
       subtitle: 'Discover a smarter, immersive way to practice and grow.',
     ),
     SplashModel(
-      image: Assets.imagesJobInterview,
+      image: Assets.images.jobInterview,
       title: 'Practice. Improve. Succeed.',
       subtitle: 'Experience realistic mock interviews in virtual reality.',
     ),
     SplashModel(
-      image:Assets.imagesHeroEmployee,
+      image: Assets.images.heroEmployee,
       title: 'Turn practice into confidence.',
       subtitle: 'Ready to face your next interview like a pro?',
     ),
   ];
-
   void _loginPage() {
     Navigator.pushReplacementNamed(context, AppRoute.login);
   }

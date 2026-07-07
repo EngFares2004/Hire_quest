@@ -1,21 +1,27 @@
 class InterviewModel {
   final String id;
   final String trackName;
-  final int score;
+  final String difficulty;
+  final num score;
+  final num numQ;
   final DateTime createdAt;
 
   InterviewModel({
     required this.id,
     required this.trackName,
+    required this.difficulty,
     required this.score,
+    required this.numQ,
     required this.createdAt,
   });
 
   factory InterviewModel.fromJson(Map<String, dynamic> json) {
     return InterviewModel(
-      id: json['id'] ?? '',
+      id: json['interviewRecordId'] ?? '',
       trackName: json['trackName'] ?? '',
-      score: json['score'] ?? 0,
+      difficulty: json['difficulty'] ?? '',
+      score: json['averageScore'] ?? 70,
+      numQ: json['numQuestions'] ?? 5,
       createdAt: DateTime.parse(json['createdAt']),
     );
   }
